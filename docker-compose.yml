@@ -1,0 +1,34 @@
+version: '3'
+services:
+  webserver:
+    restart: unless-stopped
+    #stdin_open: true
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./webserver
+    volumes:
+      - ./webserver:/webserver
+    ports:
+      - "5000"
+    environment: 
+      - OBS_IP=test
+      - HUE_IP=test5
+
+  webapp:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./webapp
+    volumes:
+      - ./webapp:/webapp
+    ports:
+      - "5000"
+
+  rogueap:
+    restart: unless-stopped
+    #image: 'wernight/ngrok:latest'
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./rogueap
+    environment: 
+      - NGROK_REGION=sa
+      - NGROK_PORT=5000
